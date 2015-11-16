@@ -1,0 +1,45 @@
+<!-- views/home.handlebars -->
+{{#if user}}
+  <div class="jumbotron">
+    <h1>Orchestrate User Authentication</h1>
+    <p>Below is your profile information!</p>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Profile Information</h3>
+    </div>
+    <div class="panel-body">
+      <p>Username: {{user.username}}</p>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">Your Clips</div>
+    <div class="panel-body">
+      <div class="user-clips">
+      </div>
+
+      <div class="user-clip-upload">
+        <form action="/clip-upload" method="post">
+          <input type="file" name="clip">
+          <input type="submit" class="btn btn-primary btn-sm" value="Upload"/>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+{{else}}
+  <div class="jumbotron">
+    <h1></h1>
+    <p>Sign in to view your profile!</p>
+    <p>
+      <a href="/signin" class="btn btn-primary btn-lg" role="button">
+        <span class="glyphicon glyphicon-user"></span> 
+        Sign in!
+      </a>
+    </p>
+  </div>
+
+{{/if}}
