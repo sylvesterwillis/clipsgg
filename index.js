@@ -1,5 +1,6 @@
 //index.js/
 var express           = require('express'),
+    http              = require('http'),
     exphbs            = require('express-handlebars'),
     logger            = require('morgan'),
     cookieParser      = require('cookie-parser'),
@@ -14,9 +15,11 @@ var express           = require('express'),
     config            = require('./config.js'), //config file contains all tokens and other private info
     funct             = require('./functions.js'), //funct file contains our helper functions for our Passport and database work
     app               = express(),
-    BinaryServer      = require('binaryjs').BinaryServer,
+    server            = http.createServer(app),
     video             = require('./lib/video'),
-    bs                = {};
+    io                = require('socket.io')(server),
+    bs                = {},
+    Files             = {};
 
 //===============PASSPORT===============
 
@@ -87,6 +90,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static('static'));
 
 // Session-persisted message middleware
 app.use(function(req, res, next){
@@ -153,27 +157,9 @@ app.get('/logout', function(req, res){
 
 //===============PORT=================
 var port = process.env.PORT || 5000; //select your port or let it pull from your .env file
-app.listen(port);
+server.listen(port);
 console.log("listening on " + port + "!");
-bs = new BinaryServer({ port: 9000 });
 
-bs.on('connection', function (client) {
-    client.on('stream', function (stream, meta) {
-        switch(meta.event) {
-        // list available videos
-        case 'list':
-            video.list(stream, meta);
-            break;
- 
-        // request for a video
-        case 'request':
-            video.request(client, meta);
-            break;
- 
-        // attempt an upload
-        case 'upload':
-        default:
-            video.upload(stream, meta);
-        }
-    });
+io.sockets.on('connection', function (socket) {
+    //Events will go here
 });

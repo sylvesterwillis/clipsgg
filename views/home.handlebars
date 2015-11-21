@@ -20,11 +20,24 @@
       <div class="user-clips">
       </div>
 
-      <div class="user-clip-upload">
-        <form action="/clip-upload" method="post">
-          <input type="file" name="clip">
-          <input type="submit" class="btn btn-primary btn-sm" value="Upload"/>
-        </form>
+      <div id="user-clip-upload">
+        <div class="alert alert-danger" id="file-error"
+             role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign"
+                aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          <span id="error-text"></span>
+        </div>
+
+        <div id="file-upload-section">
+          <input type="file" name="clip" id="file-select">
+          <label for="NameBox">Name: </label>
+          <input type="text" id="file-name"><br>
+          <input type="submit" class="btn btn-primary btn-sm"
+                 value="Upload" id="upload-button"/>
+
+          <div id="upload-progress"></div>
+        </div>
       </div>
 
     </div>
